@@ -1,0 +1,554 @@
+// SPDX-License-Identifier: (GPL-2.0 OR MIT)
+//
+// Device Tree file for LX2160A based half twins
+//
+// Copyright 2022 SolidRun Ltd.
+
+/dts-v1/;
+
+#include "fsl-lx2160a-cex7.dtsi"
+#include <dt-bindings/input/linux-event-codes.h>
+
+/ {
+	model = "SolidRun LX2160A Twins";
+	compatible = "solidrun,clearfog-twins",
+		"solidrun,lx2160a-cex7", "fsl,lx2160a";
+
+	aliases {
+		serial0 = &uart0;
+		serial1 = &uart1;
+	};
+
+	chosen {
+		stdout-path = "serial0:115200n8";
+	};
+};
+
+/* disable power-off */
+&psci {
+	no-poweroff;
+};
+
+/* raise thermal trip points to absolute maximum */
+&cluster6_7_alert {
+	temperature = <100000>;
+};
+
+&cluster6_7_crit {
+	temperature = <105000>;
+};
+
+&ddr_cluster5_alert {
+	temperature = <100000>;
+};
+
+&ddr_cluster5_crit {
+	temperature = <105000>;
+};
+
+&wriop_alert {
+	temperature = <100000>;
+};
+
+&wriop_crit {
+	temperature = <105000>;
+};
+
+&dce_qbman_alert {
+	temperature = <100000>;
+};
+
+&dce_qbman_crit {
+	temperature = <105000>;
+};
+
+&ccn_dpaa_alert {
+	temperature = <100000>;
+};
+
+&ccn_dpaa_crit {
+	temperature = <105000>;
+};
+
+&clust4_hsio3_alert {
+	temperature = <100000>;
+};
+
+&clust4_hsio3_crit {
+	temperature = <105000>;
+};
+
+&cluster2_3_alert {
+	temperature = <100000>;
+};
+
+&cluster2_3_crit {
+	temperature = <105000>;
+};
+
+&i2c2 {
+	i2c-switch@76 {
+		compatible = "nxp,pca9547";
+		#address-cells = <1>;
+		#size-cells = <0>;
+		reg = <0x76>;
+		i2c-mux-idle-disconnect;
+		twins_sfp_c1_at_i2c: i2c@1 {
+			#address-cells = <1>;
+			#size-cells = <0>;
+			reg = <1>;
+		};
+		twins_sfp_c1_ab_i2c: i2c@2 {
+			#address-cells = <1>;
+			#size-cells = <0>;
+			reg = <2>;
+		};
+		twins_sfp_c1_bt_i2c: i2c@3 {
+			#address-cells = <1>;
+			#size-cells = <0>;
+			reg = <3>;
+		};
+		twins_sfp_c1_bb_i2c: i2c@4 {
+			#address-cells = <1>;
+			#size-cells = <0>;
+			reg = <4>;
+		};
+		twins_sfp_c2_at_i2c: i2c@5 {
+			#address-cells = <1>;
+			#size-cells = <0>;
+			reg = <5>;
+		};
+		twins_sfp_c2_ab_i2c: i2c@6 {
+			#address-cells = <1>;
+			#size-cells = <0>;
+			reg = <6>;
+		};
+	};
+	i2c-switch@77 {
+		compatible = "nxp,pca9547";
+		#address-cells = <1>;
+		#size-cells = <0>;
+		reg = <0x77>;
+		i2c-mux-idle-disconnect;
+		twins_sfp_c2_bt_i2c: i2c@1 {
+			#address-cells = <1>;
+			#size-cells = <0>;
+			reg = <1>;
+		};
+		twins_sfp_c2_bb_i2c: i2c@2 {
+			#address-cells = <1>;
+			#size-cells = <0>;
+			reg = <2>;
+		};
+		twins_sfp_c3_at_i2c: i2c@3 {
+			#address-cells = <1>;
+			#size-cells = <0>;
+			reg = <3>;
+		};
+		twins_sfp_c3_ab_i2c: i2c@4 {
+			#address-cells = <1>;
+			#size-cells = <0>;
+			reg = <4>;
+		};
+		twins_sfp_c3_bt_i2c: i2c@5 {
+			#address-cells = <1>;
+			#size-cells = <0>;
+			reg = <5>;
+		};
+		twins_sfp_c3_bb_i2c: i2c@6 {
+			#address-cells = <1>;
+			#size-cells = <0>;
+			reg = <6>;
+		};
+	};
+	expander0: gpio-expander@20 {
+		compatible = "nxp,pca9555";
+		gpio-controller;
+		#gpio-cells = <2>;
+		reg = <0x20>;
+	};
+	expander1: gpio-expander@21 {
+		compatible = "nxp,pca9555";
+		gpio-controller;
+		#gpio-cells = <2>;
+		reg = <0x21>;
+	};
+
+	/* Half twins configuration; take over c3 from the other twin side */
+	i2c-switch@73 {
+		compatible = "nxp,pca9547";
+		#address-cells = <1>;
+		#size-cells = <0>;
+		reg = <0x73>;
+		i2c-mux-idle-disconnect;
+		htwins_sfp_c3_at_i2c: i2c@3 {
+			#address-cells = <1>;
+			#size-cells = <0>;
+			reg = <3>;
+		};
+		htwins_sfp_c3_ab_i2c: i2c@4 {
+			#address-cells = <1>;
+			#size-cells = <0>;
+			reg = <4>;
+		};
+		htwins_sfp_c3_bt_i2c: i2c@5 {
+			#address-cells = <1>;
+			#size-cells = <0>;
+			reg = <5>;
+		};
+		htwins_sfp_c3_bb_i2c: i2c@6 {
+			#address-cells = <1>;
+			#size-cells = <0>;
+			reg = <6>;
+		};
+	};
+	expander2: gpio-expander@24 {
+		compatible = "nxp,pca9555";
+		gpio-controller;
+		#gpio-cells = <2>;
+		reg = <0x24>;
+	};
+	expander3: gpio-expander@25 {
+		compatible = "nxp,pca9555";
+		gpio-controller;
+		#gpio-cells = <2>;
+		reg = <0x25>;
+	};
+};
+
+/ {
+	c1_at_sfp: c1-at-sfp {
+		compatible = "sff,sfp";
+		i2c-bus = <&twins_sfp_c1_at_i2c>;
+		mod-def0-gpio = <&expander0 1 GPIO_ACTIVE_LOW>;
+		maximum-power-milliwatt = <2000>;
+	};
+	c1_ab_sfp: c1-ab-sfp {
+		compatible = "sff,sfp";
+		i2c-bus = <&twins_sfp_c1_ab_i2c>;
+		mod-def0-gpio = <&expander0 2 GPIO_ACTIVE_LOW>;
+		maximum-power-milliwatt = <2000>;
+	};
+	c1_bt_sfp: c1-bt-sfp {
+		compatible = "sff,sfp";
+		i2c-bus = <&twins_sfp_c1_bt_i2c>;
+		mod-def0-gpio = <&expander0 3 GPIO_ACTIVE_LOW>;
+		maximum-power-milliwatt = <2000>;
+	};
+	c1_bb_sfp: c1-bb-sfp {
+		compatible = "sff,sfp";
+		i2c-bus = <&twins_sfp_c1_bb_i2c>;
+		mod-def0-gpio = <&expander0 4 GPIO_ACTIVE_LOW>;
+		maximum-power-milliwatt = <2000>;
+	};
+	c2_at_sfp: c2-at-sfp {
+		compatible = "sff,sfp";
+		i2c-bus = <&twins_sfp_c2_at_i2c>;
+		mod-def0-gpio = <&expander0 5 GPIO_ACTIVE_LOW>;
+		maximum-power-milliwatt = <2000>;
+	};
+	c2_ab_sfp: c2-ab-sfp {
+		compatible = "sff,sfp";
+		i2c-bus = <&twins_sfp_c2_ab_i2c>;
+		mod-def0-gpio = <&expander0 6 GPIO_ACTIVE_LOW>;
+		maximum-power-milliwatt = <2000>;
+	};
+	c2_bt_sfp: c2-bt-sfp {
+		compatible = "sff,sfp";
+		i2c-bus = <&twins_sfp_c2_bt_i2c>;
+		mod-def0-gpio = <&expander0 9 GPIO_ACTIVE_LOW>;
+		maximum-power-milliwatt = <2000>;
+	};
+	c2_bb_sfp: c2-bb-sfp {
+		compatible = "sff,sfp";
+		i2c-bus = <&twins_sfp_c2_bb_i2c>;
+		mod-def0-gpio = <&expander0 10 GPIO_ACTIVE_LOW>;
+		maximum-power-milliwatt = <2000>;
+	};
+	c3_at_sfp: c3-at-sfp {
+		compatible = "sff,sfp";
+		i2c-bus = <&twins_sfp_c3_at_i2c>;
+		mod-def0-gpio = <&expander0 11 GPIO_ACTIVE_LOW>;
+		maximum-power-milliwatt = <2000>;
+	};
+	c3_ab_sfp: c3-ab-sfp {
+		compatible = "sff,sfp";
+		i2c-bus = <&twins_sfp_c3_ab_i2c>;
+		mod-def0-gpio = <&expander0 12 GPIO_ACTIVE_LOW>;
+		maximum-power-milliwatt = <2000>;
+	};
+	c3_bt_sfp: c3-bt-sfp {
+		compatible = "sff,sfp";
+		i2c-bus = <&twins_sfp_c3_bt_i2c>;
+		mod-def0-gpio = <&expander0 13 GPIO_ACTIVE_LOW>;
+		maximum-power-milliwatt = <2000>;
+	};
+	c3_bb_sfp: c3-bb-sfp {
+		compatible = "sff,sfp";
+		i2c-bus = <&twins_sfp_c3_bb_i2c>;
+		mod-def0-gpio = <&expander0 14 GPIO_ACTIVE_LOW>;
+		maximum-power-milliwatt = <2000>;
+	};
+	ht_c3_at_sfp: ht-c3-at-sfp {
+		compatible = "sff,sfp";
+		i2c-bus = <&htwins_sfp_c3_at_i2c>;
+		mod-def0-gpio = <&expander2 11 GPIO_ACTIVE_LOW>;
+		maximum-power-milliwatt = <2000>;
+	};
+	ht_c3_ab_sfp: ht-c3-ab-sfp {
+		compatible = "sff,sfp";
+		i2c-bus = <&htwins_sfp_c3_ab_i2c>;
+		mod-def0-gpio = <&expander2 12 GPIO_ACTIVE_LOW>;
+		maximum-power-milliwatt = <2000>;
+	};
+	ht_c3_bt_sfp: ht-c3-bt-sfp {
+		compatible = "sff,sfp";
+		i2c-bus = <&htwins_sfp_c3_bt_i2c>;
+		mod-def0-gpio = <&expander2 13 GPIO_ACTIVE_LOW>;
+		maximum-power-milliwatt = <2000>;
+	};
+	ht_c3_bb_sfp: ht-c3-bb-sfp {
+		compatible = "sff,sfp";
+		i2c-bus = <&htwins_sfp_c3_bb_i2c>;
+		mod-def0-gpio = <&expander2 14 GPIO_ACTIVE_LOW>;
+		maximum-power-milliwatt = <2000>;
+	};
+	leds {
+		compatible = "gpio-leds";
+		led_c1_at: led-c1-at {
+			gpios = <&expander1 1 GPIO_ACTIVE_LOW>;
+			default-state = "off";
+		};
+		led_c1_ab: led-c1-ab {
+			gpios = <&expander1 2 GPIO_ACTIVE_LOW>;
+			default-state = "off";
+		};
+		led_c1_bt: led-c1-bt {
+			gpios = <&expander1 4 GPIO_ACTIVE_LOW>;
+			default-state = "off";
+		};
+		led_c1_bb: led-c1-bb {
+			gpios = <&expander1 3 GPIO_ACTIVE_LOW>;
+			default-state = "off";
+		};
+		led_c2_at: led-c2-at {
+			gpios = <&expander1 5 GPIO_ACTIVE_LOW>;
+			default-state = "off";
+		};
+		led_c2_ab: led-c2-ab {
+			gpios = <&expander1 6 GPIO_ACTIVE_LOW>;
+			default-state = "off";
+		};
+		led_c2_bt: led-c2-bt {
+			gpios = <&expander1 10 GPIO_ACTIVE_LOW>;
+			default-state = "off";
+		};
+		led_c2_bb: led-c2-bb {
+			gpios = <&expander1 9 GPIO_ACTIVE_LOW>;
+			default-state = "off";
+		};
+		led_c3_at: led-c3-at {
+			gpios = <&expander1 11 GPIO_ACTIVE_LOW>;
+			default-state = "off";
+		};
+		led_c3_ab: led-c3-ab {
+			gpios = <&expander1 12 GPIO_ACTIVE_LOW>;
+			default-state = "off";
+		};
+		led_c3_bt: led-c3-bt {
+			gpios = <&expander1 14 GPIO_ACTIVE_LOW>;
+			default-state = "off";
+		};
+		led_c3_bb: led-c3-bb {
+			gpios = <&expander1 13 GPIO_ACTIVE_LOW>;
+			default-state = "off";
+		};
+		led_ht_c3_at: led-ht-c3-at {
+			gpios = <&expander3 11 GPIO_ACTIVE_LOW>;
+			default-state = "off";
+		};
+		led_ht_c3_ab: led-ht-c3-ab {
+			gpios = <&expander3 12 GPIO_ACTIVE_LOW>;
+			default-state = "off";
+		};
+		led_ht_c3_bt: led-ht-c3-bt {
+			gpios = <&expander3 14 GPIO_ACTIVE_LOW>;
+			default-state = "off";
+		};
+		led_ht_c3_bb: led-ht-c3-bb {
+			gpios = <&expander3 13 GPIO_ACTIVE_LOW>;
+			default-state = "off";
+		};
+	};
+};
+
+/* SD1 lanes #0.. #7 */
+&dpmac3 {
+	sfp = <&c1_at_sfp>;
+	managed = "in-band-status";
+	phys = <&serdes_1 7>;
+	link-status-led = <&led_c1_at>;
+};
+&dpmac4 {
+	sfp = <&c1_bt_sfp>;
+	managed = "in-band-status";
+	phys = <&serdes_1 6>;
+	link-status-led = <&led_c1_bt>;
+};
+&dpmac5 {
+	sfp = <&ht_c3_bt_sfp>;
+	managed = "in-band-status";
+	phys = <&serdes_1 5>;
+	link-status-led = <&led_ht_c3_bt>;
+};
+&dpmac6 {
+	sfp = <&ht_c3_at_sfp>;
+	managed = "in-band-status";
+	phys = <&serdes_1 4>;
+	link-status-led = <&led_ht_c3_at>;
+};
+&dpmac7 {
+	sfp = <&c2_at_sfp>;
+	managed = "in-band-status";
+	phys = <&serdes_1 3>;
+	link-status-led = <&led_c2_at>;
+};
+&dpmac8 {
+	sfp = <&c2_bt_sfp>;
+	managed = "in-band-status";
+	phys = <&serdes_1 2>;
+	link-status-led = <&led_c2_bt>;
+};
+&dpmac9 {
+	sfp = <&c3_at_sfp>;
+	managed = "in-band-status";
+	phys = <&serdes_1 1>;
+	link-status-led = <&led_c3_at>;
+};
+&dpmac10 {
+	sfp = <&c3_bt_sfp>;
+	managed = "in-band-status";
+	phys = <&serdes_1 0>;
+	link-status-led = <&led_c3_bt>;
+};
+/* SD2 lanes #0.. #7 */
+&dpmac11 {
+	sfp = <&ht_c3_ab_sfp>;
+	managed = "in-band-status";
+	phys = <&serdes_2 0>;
+	link-status-led = <&led_ht_c3_ab>;
+};
+
+&dpmac12 {
+	sfp = <&c1_ab_sfp>;
+	managed = "in-band-status";
+	phys = <&serdes_2 1>;
+	link-status-led = <&led_c1_ab>;
+};
+&dpmac13 { // ok
+	sfp = <&c3_ab_sfp>;
+	managed = "in-band-status";
+	phy-mode = "sgmii";
+	phys = <&serdes_2 6>;
+	link-status-led = <&led_c3_ab>;
+};
+&dpmac14 { // ok
+	sfp = <&c3_bb_sfp>;
+	managed = "in-band-status";
+	phy-mode = "sgmii";
+	phys = <&serdes_2 7>;
+	link-status-led = <&led_c3_bb>;
+};
+&dpmac15 {
+	sfp = <&ht_c3_bb_sfp>;
+	managed = "in-band-status";
+	phys = <&serdes_2 4>;
+	link-status-led = <&led_ht_c3_bb>;
+};
+&dpmac16 {
+	sfp = <&c2_bb_sfp>;
+	managed = "in-band-status";
+	phys = <&serdes_2 5>;
+	link-status-led = <&led_c2_bb>;
+};
+&dpmac17 {
+	/delete-property/ phy-handle;
+	/delete-property/ phy-connection-type;
+	sfp = <&c1_bb_sfp>;
+	managed = "in-band-status";
+	phys = <&serdes_2 2>;
+	link-status-led = <&led_c1_bb>;
+};
+&dpmac18 {
+	sfp = <&c2_ab_sfp>;
+	managed = "in-band-status";
+	phys = <&serdes_2 3>;
+	link-status-led = <&led_c2_ab>;
+};
+
+&emdio1 {
+	status = "disabled";
+};
+
+&emdio2 {
+	status = "disabled";
+};
+&esdhc0 {
+	no-1-v-8;
+	status = "okay";
+};
+&pcs_mdio3 {
+	status = "okay";
+};
+&pcs_mdio4 {
+	status = "okay";
+};
+&pcs_mdio5 {
+	status = "okay";
+};
+&pcs_mdio6 {
+	status = "okay";
+};
+&pcs_mdio7 {
+	status = "okay";
+};
+&pcs_mdio8 {
+	status = "okay";
+};
+&pcs_mdio9 {
+	status = "okay";
+};
+&pcs_mdio10 {
+	status = "okay";
+};
+&pcs_mdio11 {
+	status = "okay";
+};
+&pcs_mdio12 {
+	status = "okay";
+};
+&pcs_mdio13 {
+	status = "okay";
+};
+&pcs_mdio14 {
+	status = "okay";
+};
+&pcs_mdio15 {
+	status = "okay";
+};
+&pcs_mdio16 {
+	status = "okay";
+};
+&pcs_mdio17 {
+	status = "okay";
+};
+&pcs_mdio18 {
+	status = "okay";
+};
+
+&uart0 {
+	status = "okay";
+};
+&uart1 {
+	status = "okay";
+};

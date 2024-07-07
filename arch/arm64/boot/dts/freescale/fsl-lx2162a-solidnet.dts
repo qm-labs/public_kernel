@@ -1,0 +1,31 @@
+// SPDX-License-Identifier: (GPL-2.0 OR MIT)
+//
+// Device Tree file for LX2162A SolidNet
+//
+// Copyright 2021 SolidRun ltd. (Rabeeh@solid-run.com)
+
+/dts-v1/;
+
+#include "fsl-lx2162a-som.dtsi"
+
+/ {
+	model = "SolidRun LX2162A based SolidNet";
+	compatible = "fsl,lx2162a-dpu", "fsl,lx2160a";
+	aliases {
+		crypto = &crypto;
+		serial0 = &uart0;
+	};
+	chosen {
+		stdout-path = "serial0:115200n8";
+	};
+};
+
+&dpmac5 {
+	phy-connection-type = "usxgmii";
+	managed = "in-band-status";
+};
+
+&dpmac6 {
+	phy-connection-type = "usxgmii";
+	managed = "in-band-status";
+};
